@@ -1,0 +1,28 @@
+{
+    "name"        : "CaptainScraper",
+    "version"     : "1.0.0",
+    "description" : "Easily create scrapers",
+    "main"        : "build.js",
+    "dependencies" : {
+        "fs"      : "~0.0.2",
+        "fs-extra": "^0.30.0",
+        "request" : "~2.72.0",
+        "iconv-lite": "^0.4.13",
+        "cheerio" : "^0.20.0",
+        "mongodb" : "^2.1.18",
+        "colors"  : "^1.1.2"
+    },
+    "devDependencies" : {},
+    "scripts" : {
+        "test" : "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository" : {
+        "type" : "git",
+        "url"  : "git://git.nathanlopez.fr:3000/nlopez/CaptainScraper.git"
+    },
+    "author"  : "Nathan Lopez",
+    "license" : "BSD-2-Clause",
+    "bugs"    : {
+        "url": "http://git.nathanlopez.fr/nlopez/CaptainScraper"
+    }
+}
