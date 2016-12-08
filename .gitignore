@@ -1,4 +1,12 @@
-lib/node_modules/*
-database/*
-!database/dir.info
+/app/cache/*
+!app/cache/.gitkeep
+
+/app/logs/*
+!app/logs/.gitkeep
+
+/vendor/node_modules/*
+
+/docs/*
+!docs/.gitkeep
+
 *~*

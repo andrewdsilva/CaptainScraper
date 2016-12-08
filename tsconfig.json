@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "target"             : "ES5",
+        "removeComments"     : false,
+        "preserveConstEnums" : true,
+        "outFile"            : "./app/cache/doc.js",
+        "sourceRoot"         : "./",
+        "rootDir"            : "./",
+        "sourceMap"          : true,
+        "module"             : "commonjs"
+    },
+    "exclude": [
+        "vendor/node_modules"
+    ]
+}

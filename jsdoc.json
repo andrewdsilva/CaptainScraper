@@ -1,0 +1,23 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "source": {
+        "include": [
+            "app/cache/doc.js",
+            "README.md"
+        ]
+    },
+    "plugins": [],
+    "templates": {
+        "cleverLinks": true,
+        "monospaceLinks": true,
+        "applicationName": "CaptainScraper"
+    },
+    "opts": {
+        "template": "docs/template/latodoc",
+        "encoding": "utf8",
+        "destination": "./docs/"
+    }
+}

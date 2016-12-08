@@ -1,0 +1,10 @@
+{
+    "scripts" : [
+        {
+            "path"            : "Sample/Allocine/AllocineCinemas",
+            "runFrequency"    : 86400000,
+
+            "test"            : false
+        }
+    ]
+}

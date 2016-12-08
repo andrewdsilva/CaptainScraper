@@ -1,0 +1,24 @@
+{
+    "imports" : [
+        "Logs",
+        "Database",
+        "Scraper",
+        "ORM"
+    ],
+    "database" : [
+        {
+            "id"       : "myDatabase",
+            "host"     : "localhost",
+            "port"     : "",
+            "user"     : "root",
+            "password" : "iLoveCaptainScraper",
+            "database" : "captainScraperSample"
+        }
+    ],
+    "logs" : {
+        "database" : false,
+        "scraper"  : true,
+        "manager"  : true,
+        "orm"      : true
+    }
+}
