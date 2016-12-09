@@ -85,7 +85,10 @@ class Database extends Module {
         let MongoClient: any = mongodb.MongoClient;
         let self: any        = this;
 
-        this.data.serverUrl = 'mongodb://localhost:27142/' + this.controller.name;
+        let host: string = process.env.MONGO_HOST ? process.env.MONGO_HOST : 'localhost';
+        let port: number = process.env.MONGO_PORT ? process.env.MONGO_PORT : '27043';
+
+        this.data.serverUrl = 'mongodb://' + host + ':' + port + '/' + this.controller.name;
 
         MongoClient.connect( this.data.serverUrl , function ( err, db ) {
 
