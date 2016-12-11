@@ -30,10 +30,12 @@ Install the following:
 
 Clone the repository and install the required modules :
 
-    $ git clone git@github.com:andrewdsilva/CaptainScraper.git
-    $ cd vendor/
-    $ npm install
-    $ cd ..
+```sh
+git clone git@github.com:andrewdsilva/CaptainScraper.git
+cd vendor/
+npm install
+cd ..
+```
 
 ### With Docker
 
@@ -46,21 +48,31 @@ Build an image of CaptainScraper from the Dockerfile :
 
 *At the command line, make sure the current directory is the root of CaptainScraper project, where the Dockerfile is.*
 
-    $ docker build -t captainscraper:2.0 .
-    
+```sh
+docker build -t captainscraper:2.0 .
+```
+
 Now you can run a terminal on the Docker with Docker Compose :
 
-    $ docker-compose run app bash
+```sh
+docker-compose run app bash
+```
 
 ## Usage
 
-Start mongo database :
+```sh
+# Manually start mongo database (if you are not using docker)
+bash app/startDatabase.sh
 
-    $ bash app/startDatabase.sh
+# Execute a script located at /src/Sample/Allocine/Controller/AllocineCinemas.ts
+ts-node app/console script:run Sample/Allocine/AllocineCinemas
 
-Execute your controller :
+# Equivalent
+ts-node app/console script:run Sample/Allocine/Controller/AllocineCinemas
 
-    $ ts-node app/console script:run Sample/Allocine/AllocineCinemas
+# Execute a script using docker-compose
+docker-compose run app ts-node app/console script:run Sample/Allocine/AllocineCinemas
+```
 
 ## Example of use
 
