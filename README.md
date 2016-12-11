@@ -7,6 +7,8 @@ CaptainScraper is a NodeJs web scraper framework. It allows developers to build 
 
 - [Features](#features)
 - [Installation](#installation)
+    - [Classique](#classique)
+    - [With Docker](#with-docker)
 - [Usage](#usage)
 - [Example of use](#example-of-use)
 - [All Available Options](#all-available-options)
@@ -17,6 +19,8 @@ Coming soon...
 
 ## Installation
 
+### Classique
+
 Install the following:
 
 - NodeJs (>=5)
@@ -24,12 +28,29 @@ Install the following:
 - Typescript (npm)
 - ts-node (npm)
 
-Clone the repository and install the required modules:
+Clone the repository and install the required modules :
 
     $ git clone git@github.com:andrewdsilva/CaptainScraper.git
     $ cd vendor/
     $ npm install
     $ cd ..
+
+### With Docker
+
+Install the following:
+
+- Docker : https://docs.docker.com/engine/installation/
+- Docker Compose : https://docs.docker.com/compose/install/
+
+Build an image of CaptainScraper from the Dockerfile :
+
+*At the command line, make sure the current directory is the root of CaptainScraper project, where the Dockerfile is.*
+
+    $ docker build -t captainscraper:2.0 .
+    
+Now you can run a terminal on the Docker with Docker Compose :
+
+    $ docker-compose run app bash
 
 ## Usage
 
