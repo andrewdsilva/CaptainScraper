@@ -1,10 +1,4 @@
-import { Parameters } from '../../../../vendor/captainscraper/framework/Configuration/Configuration';
-import { Config } from '../../../../vendor/captainscraper/framework/Configuration/Configuration';
 import { HtmlParser } from '../../../../vendor/captainscraper/modules/Scraper/Parser/HtmlParser';
-
-declare function require( name:string );
-
-let colors: any      = require( Parameters.dir.modules + '/colors' );
 
 /* My parsers */
 import { CinemaListParser } from './CinemaListParser';

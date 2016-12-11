@@ -5,21 +5,17 @@ CaptainScraper is a NodeJs web scraper framework. It allows developers to build 
 
 ## Table of contents
 
-- [Features](#features)
 - [Installation](#installation)
-    - [Classique](#classique)
+    - [Simple](#simple)
     - [With Docker](#with-docker)
 - [Usage](#usage)
-- [Example of use](#example-of-use)
-- [All Available Options](#all-available-options)
-
-## Features
-
-Coming soon...
+- [Get started](#get-started)
+- [Best Practices](#best-practices)
+- [All available options](#all-available-options)
 
 ## Installation
 
-### Classique
+### Simple
 
 Install the following:
 
@@ -74,25 +70,95 @@ ts-node app/console script:run Sample/Allocine/Controller/AllocineCinemas
 docker-compose run app ts-node app/console script:run Sample/Allocine/AllocineCinemas
 ```
 
-## Example of use
+## Get started
 
-Coming soon...
+#### Controller
+
+A controller is a class with a function **execute** that contains the main logic of your program. Every scraper has a controller. This is an example of controller declaration :
+
+```ts
+import { Controller } from '../../../../vendor/captainscraper/framework/Controller/Controller';
+
+class MyFirstController extends Controller {
+
+    public execute(): void {
+        console.log( 'Hello world!' );
+    }
+
+}
+
+export { MyFirstController };
+```
+
+#### Parser
+
+A parser is a function you create that reads information from a web page. There is several kind of parsers, for example **HtmlParser** allow you to parse the page with cheerio that is an equivalent of jQuery.
+
+```ts
+import { HtmlParser } from '../../../../vendor/captainscraper/modules/Scraper/Parser/HtmlParser';
+
+class MyFirstParser extends HtmlParser {
+
+    public name: string = 'MyFirstParser';
+
+    public parse( $: any, parameters: any ): void {
+
+        /* Finding users on the page */
+        $( 'div.user' ).each(function() {
+            console.log('User found : ' + $( this ).text();
+        });
+
+    }
+
+}
+
+export { MyFirstParser };
+```
+
+#### Load a page
+
+To load a page we use the **addPage** function of the **Scraper** module. In a controller you can get a module like this :
+
+```ts
+let scraperModule : any = this.get('Scraper');
+```
+
+In a parser you can get the **Scraper** module with the **parent** attribut of the class. This attribut references the instance of Scraper that call the parser.
+
+```ts
+let scraperModule : any = this.parent;
+```
+
+Then you can call the **addPage** function with some parameters. This operation will be queued!
+
+```ts
+let listPageParameters: any = {
+    url    : 'https://www.google.fr',
+    parser : MyParser
+};
+
+scraperModule.addPage( listPageParameters );
+```
 
 ## Best Practices
 
 #### Organizing your project
 
-    captainscraper/
-    ├─ app/
-    ├─ src/
-    │  └─ MyProject/
-    │     └─ Controller/
-    │        └─ MyController.ts
-    │     └─ Parser/
-    │        └─ MyFirstParser.ts
-    │        └─ MySecondParser.ts
-    ├─ vendor/
+This is a suggestion to organize your project, with separate folder for controllers and parsers.
 
-## All Available Options
+```
+captainscraper/
+├─ app/
+├─ src/
+│  └─ MyProject/
+│     └─ Controller/
+│        └─ MyController.ts
+│     └─ Parser/
+│        └─ MyFirstParser.ts
+│        └─ MySecondParser.ts
+├─ vendor/
+```
+
+## All available options
 
 Coming soon...
