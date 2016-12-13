@@ -21,6 +21,7 @@ import { Database } from '../../modules/Database/Database';
 import { Controller } from '../../framework/Controller/Controller';
 import { ManagerDatabase } from '../../framework/Manager/ManagerDatabase';
 import { Parser } from './Parser/Parser';
+import { Cookies } from './Cookies';
 
 let request: any       = require( Parameters.dir.modules + '/request' );
 let iconv: any         = require( Parameters.dir.modules + '/iconv-lite' );
@@ -32,26 +33,28 @@ class Scraper extends Module {
     static currentId: number = 0;
 
     private manager: ManagerDatabase = null;
+    private cookies: Cookies         = null;
 
     public param: any = {
+        websiteDomain   : 'http://xxx.xx',
+        basicAuth       : false,
+        enableCookies   : false,
+
+        frequency       : 100,
         maxLoadingPages : 3,
         maxPagesInRam   : 200,
-        frequency       : 100,
-        auto            : true,
-        log             : Config.logs.scraper,
-        timeout         : 20000,
-
-        urlFail         : {},
         maxFailPerPage  : 3,
 
-        basicAuth       : false,
-        websiteDomain   : 'http://xxx.xx'
+        auto            : true,
+        timeout         : 20000,
+
+        log             : Config.logs.scraper
     };
 
     public moduleName: string = 'Scraper';
     public scraperId: number;
 
-    private data: any = {
+    public data: any = {
         urlFail : {}
     };
 
@@ -59,9 +62,15 @@ class Scraper extends Module {
 
         super( controller );
 
+        /* Dependency */
+        if( controller.get('Database') === null ) {
+            throw new Error( 'FormHandler does not work without the Scraper module.' );
+        }
+
         Scraper.currentId++;
 
         this.scraperId = Scraper.currentId;
+        this.cookies   = new Cookies();
 
     }
 
@@ -81,6 +90,11 @@ class Scraper extends Module {
             this.log( 'Error addPage : URL NOT DEFINED', 'red' );
 
             return;
+        }
+
+        /* Cookies */
+        if( this.param.enableCookies ) {
+            header[ 'Cookie' ] = this.cookies.toString();
         }
 
         /* Url relatif */
@@ -174,6 +188,24 @@ class Scraper extends Module {
                 self.manager.decreaseDataWaitingElements();
 
                 if( !error ) {
+                    /* Cookies */
+                    if( response.headers.hasOwnProperty( 'set-cookie' ) && self.param.enableCookies ) {
+                        let cookieData: Array<string> = response.headers[ 'set-cookie' ];
+
+                        for( let i: number = 0; i < cookieData.length; i++ ) {
+                            let tmpCookie: Array<string> = cookieData[i].split('; ');
+
+                            for( let j: number = 0; j < tmpCookie.length; j++ ) {
+                                let cookieTab: Array<string> = tmpCookie[j].match( /([%a-zA-Z0-9_-\s,:]+)=([%a-zA-Z0-9_-\s,:]+)/ );
+
+                                if( cookieTab && cookieTab.length === 3 ) {
+                                    self.cookies.set( cookieTab[1], cookieTab[2] );
+                                }
+                            }
+                        }
+                    }
+
+                    /* Encodage */
                     if( self.param.encodage ) {
                         body = iconv.decode( new Buffer(body), self.param.encodage );
                     }
@@ -188,11 +220,11 @@ class Scraper extends Module {
                 } else {
                     self.log( 'Error : ' + error, 'red' );
 
-                    if( !this.param.urlFail.hasOwnProperty( url ) || this.param.urlFail[ url ] < self.param.maxFailPerPage ) {
-                        if( !this.param.urlFail.hasOwnProperty( url ) ) {
-                            this.param.urlFail[ url ] = 1;
+                    if( !self.data.urlFail.hasOwnProperty( url ) || self.data.urlFail[ url ] < self.param.maxFailPerPage ) {
+                        if( !self.data.urlFail.hasOwnProperty( url ) ) {
+                            self.data.urlFail[ url ] = 1;
                         } else {
-                            this.param.urlFail[ url ]++;
+                            self.data.urlFail[ url ]++;
                         }
 
                         self.loadPage( url, callback, header );

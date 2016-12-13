@@ -10,6 +10,7 @@ app:
   volumes:
       - ./src:/opt/soft/src
       - ./vendor:/opt/soft/vendor
+      - ./app/config:/opt/soft/app/config
 
 db:
   image: mongo

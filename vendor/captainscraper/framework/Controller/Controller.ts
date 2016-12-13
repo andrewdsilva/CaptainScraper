@@ -38,8 +38,8 @@ abstract class Controller {
 
                 this.modules.push( new ( classImport )( this ) );
             } catch( err ) {
-                console.log( ( 'Error : Can\'t find class ' + moduleName + ' in vendor/captainscraper/modules/' + moduleName + '/' + moduleName ).red );
-                console.log( err );
+                console.log( ( 'Error: Can\'t import module ' + moduleName + ' in vendor/captainscraper/modules/' + moduleName + '/' + moduleName + '.' ).red );
+                console.log( err.toString().red );
             }
         }
 
@@ -58,6 +58,8 @@ abstract class Controller {
                 return this.modules[i];
             }
         }
+
+        return null;
 
     }
 
