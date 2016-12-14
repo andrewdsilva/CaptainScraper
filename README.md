@@ -24,7 +24,7 @@ Install the following:
 - Typescript (npm)
 - ts-node (npm)
 
-Clone the repository and install the required modules :
+Clone the repository and install the required modules:
 
 ```sh
 git clone git@github.com:andrewdsilva/CaptainScraper.git
@@ -37,18 +37,18 @@ cd ..
 
 Install the following:
 
-- Docker : https://docs.docker.com/engine/installation/
-- Docker Compose : https://docs.docker.com/compose/install/
+- Docker: https://docs.docker.com/engine/installation/
+- Docker Compose: https://docs.docker.com/compose/install/
 
-Build an image of CaptainScraper from the Dockerfile :
+Build an image of CaptainScraper from the Dockerfile:
 
-*At the command line, make sure the current directory is the root of CaptainScraper project, where the Dockerfile is.*
+*At the command line, make sure the current directory is the root of CaptainScraper project, where the docker-compose.yml is.*
 
 ```sh
-docker build -t captainscraper:2.0 .
+docker-compose build
 ```
 
-Now you can run a terminal on the Docker with Docker Compose :
+Now you can run a terminal on the Docker with Docker Compose:
 
 ```sh
 docker-compose run app bash
@@ -74,7 +74,7 @@ docker-compose run app ts-node app/console script:run Sample/Allocine/AllocineCi
 
 #### Controller
 
-A controller is a class with a function **execute** that contains the main logic of your program. Every scraper has a controller. This is an example of controller declaration :
+A controller is a class with a function **execute** that contains the main logic of your program. Every scraper has a controller. This is an example of controller declaration:
 
 ```ts
 import { Controller } from '../../../../vendor/captainscraper/framework/Controller/Controller';
@@ -105,7 +105,7 @@ class MyFirstParser extends HtmlParser {
 
         /* Finding users on the page */
         $( 'div.user' ).each(function() {
-            console.log('User found : ' + $( this ).text();
+            console.log( 'User found : ' + $( this ).text() );
         });
 
     }
@@ -117,24 +117,24 @@ export { MyFirstParser };
 
 #### Load a page
 
-To load a page we use the **addPage** function of the **Scraper** module. In a controller you can get a module like this :
+To load a page we use the **addPage** function of the **Scraper** module. In a controller you can get a module like this:
 
 ```ts
-let scraperModule : any = this.get('Scraper');
+let scraperModule: any = this.get( 'Scraper' );
 ```
 
 In a parser you can get the **Scraper** module with the **parent** attribut of the class. This attribut references the instance of Scraper that call the parser.
 
 ```ts
-let scraperModule : any = this.parent;
+let scraperModule: any = this.parent;
 ```
 
 Then you can call the **addPage** function with some parameters. This operation will be queued!
 
 ```ts
 let listPageParameters: any = {
-    url    : 'https://www.google.fr',
-    parser : MyParser
+    url   : 'https://www.google.fr',
+    parser: MyParser
 };
 
 scraperModule.addPage( listPageParameters );
