@@ -56,8 +56,10 @@ docker-compose run app bash
 
 ## Usage
 
+### Simple
+
 ```sh
-# Manually start mongo database (if you are not using docker)
+# Manually start mongo database
 bash app/startDatabase.sh
 
 # Execute a script located at /src/Sample/Allocine/Controller/AllocineCinemas.ts
@@ -65,9 +67,16 @@ ts-node app/console script:run Sample/Allocine/AllocineCinemas
 
 # Equivalent
 ts-node app/console script:run Sample/Allocine/Controller/AllocineCinemas
+```
 
+### With Docker
+
+```sh
 # Execute a script using docker-compose
-docker-compose run app ts-node app/console script:run Sample/Allocine/AllocineCinemas
+docker-compose run app script:run Sample/Allocine/AllocineCinemas
+
+# Use docker-compose in dev environment (with no entrypoint)
+docker-compose -f docker-compose.dev.yml run app bash
 ```
 
 ## Get started
