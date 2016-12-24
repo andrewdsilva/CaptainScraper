@@ -9,4 +9,6 @@
 /docs/*
 !docs/.gitkeep
 
+/app/config/parameters.json
+
 *~*

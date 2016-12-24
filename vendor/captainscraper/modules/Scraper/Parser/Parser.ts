@@ -7,6 +7,7 @@
 
 import { Parameters } from '../../../framework/Configuration/Configuration';
 import { Config } from '../../../framework/Configuration/Configuration';
+import { Module } from '../../../framework/Module/Module';
 import { Scraper } from '../Scraper';
 
 class Parser {
@@ -43,6 +44,23 @@ class Parser {
 
     }
 
+    /**
+     * @function    get
+     * @memberof    Parser
+     * @description Find a module (scraper, orm...)
+     */
+    public get( name: string ): Module {
+
+        return this.parent.getController().get( name );
+
+    }
+
+    /**
+     * @function    get
+     * @memberof    Parser
+     * @description Find a parser by his name and scraper id
+     * @static
+     */
     public static get( scraperId: number, name: string ): Parser {
 
         if( Parser.list.hasOwnProperty( scraperId.toString() ) ) {

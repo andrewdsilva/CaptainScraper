@@ -68,7 +68,7 @@ class Application {
      * @param       {string} fileName
      * @description Read config file and complete Config and RunConfig objects
      */
-    static readConfig( fileName: string ): Object {
+    static readConfig( fileName: string, exitIfFail: boolean = true ): Object {
 
         try {
             let json: any   = fs.readFileSync( Parameters.dir.config + '/' + fileName );
@@ -76,10 +76,12 @@ class Application {
 
             return config;
         } catch( err ) {
-            Application.log( 'Can not read configuration file..', 'red' );
-            Application.log( err, 'red' );
+            if( exitIfFail ) {
+                Application.log( 'Can not read configuration file..', 'red' );
+                Application.log( err, 'red' );
 
-            process.exit();
+                process.exit();
+            }
         }
 
     }
@@ -109,11 +111,16 @@ class Application {
 
         /* Reading config */
 
-        let config: Object = Application.readConfig( 'config.json' );
-        let run: Object    = Application.readConfig( 'run.json' );
+        let config: Object     = Application.readConfig( 'config.json' );
+        let run: Object        = Application.readConfig( 'run.json' );
 
         Config.setConfig( config );
         RunConfig.setConfig( run );
+
+        /* Reading parameters if exists */
+        let parameters: Object = Application.readConfig( 'parameters.json', false );
+
+        if( parameters ) Parameters.setConfig( parameters );
 
         /* Handle commands */
 

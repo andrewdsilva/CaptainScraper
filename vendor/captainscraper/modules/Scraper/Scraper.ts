@@ -27,6 +27,7 @@ let request: any       = require( Parameters.dir.modules + '/request' );
 let iconv: any         = require( Parameters.dir.modules + '/iconv-lite' );
 let colors: any        = require( Parameters.dir.modules + '/colors' );
 let cheerio: any       = require( Parameters.dir.modules + '/cheerio' );
+let querystring: any   = require( Parameters.dir.modules + '/querystring' );
 
 class Scraper extends Module {
 
@@ -83,6 +84,8 @@ class Scraper extends Module {
         let param: any         = parameters.param || {};
         let parser: any        = parameters.parser;
         let noDoublon: boolean = parameters.noDoublon || false;
+        let form: any          = parameters.form || {};
+        let method: string     = parameters.method || 'GET';
         let database: Database = <Database>this.controller.get('Database');
 
         /* Pas d'url */
@@ -116,24 +119,37 @@ class Scraper extends Module {
             database.upsert(
                 'scraper',
                 {
-                    url   : url,
-                    param : param
+                    url    : url,
+                    method : method,
+                    parameters : {
+                        header : header,
+                        form   : form,
+                        data   : param
+                    }
                 },
                 {
-                    url      : url,
-                    parser   : parser.name,
-                    header   : header,
-                    param    : param
+                    url        : url,
+                    method     : method,
+                    parser     : parser.name,
+                    parameters : {
+                        header : header,
+                        form   : form,
+                        data   : param
+                    }
                 }
             );
         } else {
             database.insert(
                 'scraper',
                 {
-                    url      : url,
-                    parser   : parser.name,
-                    header   : header,
-                    param    : param
+                    url        : url,
+                    method     : method,
+                    parser     : parser.name,
+                    parameters : {
+                        header : header,
+                        form   : form,
+                        data   : param
+                    }
                 }
             );
         }
@@ -152,7 +168,7 @@ class Scraper extends Module {
 
     /* Private */
 
-    public loadPage( url: string, callback: Function, header: any ): void {
+    public loadPage( url: string, method:string, callback: Function, parameters: any ): void {
 
         let self: any = this;
 
@@ -161,79 +177,99 @@ class Scraper extends Module {
         self.manager.increaseDataNbInstances();
 
         let options: any = {
-            url               : url,
-            headers           : {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36'
+            method             : method.toUpperCase(),
+            url                : url,
+            headers            : {
+                'Accept'                    : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language'           : 'fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4',
+                'Cache-Control'             : 'max-age=0',
+                'Connection'                : 'keep-alive',
+                'Cookie'                    : '',
+                'DNT'                       : '1',
+                'Host'                      : self.param.websiteDomain.replace(/http[s]*:\/\//gi, ''),
+                'Referer'                   : self.param.websiteDomain,
+                'Upgrade-Insecure-Requests' : '1',
+                'User-Agent'                : 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36'
             },
-            timeout           : self.param.timeout,
-            rejectUnauthorized: false
+            timeout            : self.param.timeout,
+            rejectUnauthorized : false,
+            followRedirect     : true
         };
 
-        if( !( typeof header === 'undefined' ) ) {
-            let key: string;
-            for( key in header ) {
-                options.headers[ key ] = header[ key ];
-            }
+        let key: string;
+        for( key in parameters.header ) {
+            options.headers[ key ] = parameters.header[ key ];
         }
 
         if( self.param.encodage ) {
             options.encoding = null;
         }
 
+        /* Form */
+        if( Object.keys( parameters.form ).length > 0 ) {
+            options.form = parameters.form;
+        }
+
+        // console.log( options );
+
         request(
             options,
             function (error, response, body) {
-                self.manager.decreaseDataNbInstances();
-                self.manager.increaseDataTotalExec();
-                self.manager.decreaseDataWaitingElements();
-
-                if( !error ) {
-                    /* Cookies */
-                    if( response.headers.hasOwnProperty( 'set-cookie' ) && self.param.enableCookies ) {
-                        let cookieData: Array<string> = response.headers[ 'set-cookie' ];
-
-                        for( let i: number = 0; i < cookieData.length; i++ ) {
-                            let tmpCookie: Array<string> = cookieData[i].split('; ');
-
-                            for( let j: number = 0; j < tmpCookie.length; j++ ) {
-                                let cookieTab: Array<string> = tmpCookie[j].match( /([%a-zA-Z0-9_-\s,:]+)=([%a-zA-Z0-9_-\s,:]+)/ );
-
-                                if( cookieTab && cookieTab.length === 3 ) {
-                                    self.cookies.set( cookieTab[1], cookieTab[2] );
-                                }
-                            }
-                        }
-                    }
-
-                    /* Encodage */
-                    if( self.param.encodage ) {
-                        body = iconv.decode( new Buffer(body), self.param.encodage );
-                    }
-
-                    let headers: any = {};
-
-                    if( typeof response !== 'undefined' && response.hasOwnProperty( 'headers' ) ) {
-                        headers = response.headers;
-                    }
-
-                    callback( body, headers );
-                } else {
-                    self.log( 'Error : ' + error, 'red' );
-
-                    if( !self.data.urlFail.hasOwnProperty( url ) || self.data.urlFail[ url ] < self.param.maxFailPerPage ) {
-                        if( !self.data.urlFail.hasOwnProperty( url ) ) {
-                            self.data.urlFail[ url ] = 1;
-                        } else {
-                            self.data.urlFail[ url ]++;
-                        }
-
-                        self.loadPage( url, callback, header );
-                    } else {
-                        callback( '', {} );
-                    }
-                }
+                self.loadPageCallback( error, response, body, options, parameters, callback );
             }
         );
+
+    }
+
+    public loadPageCallback( error: any, response: any, body: string, options: any, parameters: any, callback: Function ): void {
+
+        this.manager.decreaseDataNbInstances();
+        this.manager.increaseDataTotalExec();
+        this.manager.decreaseDataWaitingElements();
+
+        if( !error ) {
+
+            // console.log(response.headers);
+
+            /* Cookies */
+            if( response.headers.hasOwnProperty( 'set-cookie' ) && this.param.enableCookies ) {
+                let cookieData: Array<string> = response.headers[ 'set-cookie' ];
+
+                for( let i: number = 0; i < cookieData.length; i++ ) {
+                    this.cookies.applySetCookie( cookieData[i] );
+                }
+            }
+
+            /* Encodage */
+            if( this.param.encodage ) {
+                body = iconv.decode( new Buffer(body), this.param.encodage );
+            }
+
+            let headers: any = {};
+
+            if( typeof response !== 'undefined' && response.hasOwnProperty( 'headers' ) ) {
+                headers = response.headers;
+            }
+
+            callback( body, headers );
+
+        } else {
+
+            this.log( 'Error : ' + error, 'red' );
+
+            if( !this.data.urlFail.hasOwnProperty( options.url ) || this.data.urlFail[ options.url ] < this.param.maxFailPerPage ) {
+                if( !this.data.urlFail.hasOwnProperty( options.url ) ) {
+                    this.data.urlFail[ options.url ] = 1;
+                } else {
+                    this.data.urlFail[ options.url ]++;
+                }
+
+                this.loadPage( options.url, options.method, callback, parameters );
+            } else {
+                callback( '', {} );
+            }
+
+        }
 
     }
 
@@ -244,12 +280,13 @@ class Scraper extends Module {
         let main: Function = function( page ) {
             self.loadPage(
                 page.url,
+                page.method,
                 function( data, headers ) {
                     let parameters: any = {
                         url    : page.url,
                         header : headers,
                         body   : data,
-                        other  : page.param
+                        other  : page.parameters.data
                     };
 
                     try {
@@ -258,7 +295,7 @@ class Scraper extends Module {
                         self.log( 'Parsing error! ' + page.parser + ' : ' + e, 'red' );
                     }
                 },
-                page.header
+                page.parameters
             );
         };
 

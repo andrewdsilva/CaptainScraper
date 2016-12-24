@@ -36,7 +36,13 @@ abstract class Controller {
 
                 /* Instanciation */
 
-                this.modules.push( new ( classImport )( this ) );
+                let m: Module = new ( classImport )( this );
+
+                if( typeof m.moduleName === 'undefined' ) {
+                    throw new Error( 'Please define a name for your module with the moduleName property.' );
+                }
+
+                this.modules.push( m );
             } catch( err ) {
                 console.log( ( 'Error: Can\'t import module ' + moduleName + ' in vendor/captainscraper/modules/' + moduleName + '/' + moduleName + '.' ).red );
                 console.log( err.toString().red );

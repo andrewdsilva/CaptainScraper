@@ -37,6 +37,20 @@ class Cookies {
 
     }
 
+    public applySetCookie( cookie: string ): void {
+
+        let tmpCookie: Array<string> = cookie.split('; ');
+
+        for( let j: number = 0; j < tmpCookie.length; j++ ) {
+            let cookieTab: Array<string> = tmpCookie[j].match( /([%a-zA-Z0-9_-\s,:]+)=([%a-zA-Z0-9_-\s,:]+)/ );
+
+            if( cookieTab && cookieTab.length === 3 ) {
+                this.set( cookieTab[1], cookieTab[2] );
+            }
+        }
+
+    }
+
     public set( key: string, value: string ): void {
 
         this.cookies[ key ] = value;

@@ -16,6 +16,23 @@ class Parameters {
         'commands'  : __dirname + '/../Command',
         'framework' : __dirname + '/..'
     };
+    static data: any = {};
+
+    static setConfig( config: any ): void {
+
+        this.data = config;
+
+    }
+
+    static get( key ): any {
+
+        if( this.data.hasOwnProperty( key ) ) {
+            return this.data[ key ];
+        } else {
+            return null;
+        }
+
+    }
 
 }
 

@@ -6,8 +6,6 @@ CaptainScraper is a NodeJs web scraper framework. It allows developers to build 
 ## Table of contents
 
 - [Installation](#installation)
-    - [Simple](#simple)
-    - [With Docker](#with-docker)
 - [Usage](#usage)
 - [Get started](#get-started)
 - [Best Practices](#best-practices)
