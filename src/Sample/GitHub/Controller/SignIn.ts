@@ -7,7 +7,7 @@ class SignIn extends Controller {
 
     public execute(): void {
 
-        let scraperModule : any = this.get('Scraper');
+        let scraperModule: any = this.get('Scraper');
 
         /* Setting main url */
         scraperModule.param.websiteDomain = 'https://github.com';

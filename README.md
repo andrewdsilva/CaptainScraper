@@ -8,6 +8,8 @@ CaptainScraper is a NodeJs web scraper framework. It allows developers to build 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Get started](#get-started)
+- [Load a page](#load-a-page)
+- [Submit a form](#load-a-page)
 - [Best Practices](#best-practices)
 - [All available options](#all-available-options)
 
@@ -112,7 +114,7 @@ class MyFirstParser extends HtmlParser {
 
         /* Finding users on the page */
         $( 'div.user' ).each(function() {
-            console.log( 'User found : ' + $( this ).text() );
+            console.log( 'User found: ' + $( this ).text() );
         });
 
     }
@@ -147,6 +149,30 @@ let listPageParameters: any = {
 scraperModule.addPage( listPageParameters );
 ```
 
+#### Submit a form
+
+To handle a form make sure the FormHandler module is imported in *app/config/config.json*.
+
+First, load the page that contains the form you want to submit. Then, in the parser you can get the **FormHandler** module like that:
+```ts
+let formHandler: any = this.get('FormHandler');
+```
+
+Use the **getForm** function from the **formHandler** module to create a new **Form** object based on the form present in the page. The **Form** will be automaticly filled with all the inputs presents of the html form.
+```ts
+let form: any = formHandler.getForm( '.auth-form form', $ );
+```
+
+Then you can set your values in the **Form** like this:
+```ts
+form.setInput( 'login', 'Robert1234' );
+```
+
+Call the **submit** function from the **formHandler** module to send your form. The secound parameter is the **Parser** that will be called with the server answer.
+```ts
+formHandler.submit( form, LoggedParser );
+```
+
 ## Best Practices
 
 #### Organizing your project
@@ -168,4 +194,70 @@ captainscraper/
 
 ## All available options
 
-Coming soon...
+#### Add custom config parameters
+
+You can make your own custom parameters file and access these values from your scripts. First create the json file *app/config/parameters.json* and initialize it with a json object.
+```json
+{
+    "sample" : {
+        "github" : {
+            "login"    : "MyLogin",
+            "password" : "MyPassword"
+        }
+    }
+}
+```
+
+Then call the **get** function from the **Parameters** class to get a data.
+```ts
+Parameters.get('sample').github.password
+```
+
+You can import the **Parameters** class in your *Controller* or *Parser* like this:
+```ts
+import { Parameters } from '../../../../vendor/captainscraper/framework/Configuration/Configuration';
+```
+
+*I know it's a little bit tricky, it will be simplified.*
+
+#### The Scraper module
+
+Module parameters can be modified like this:
+```ts
+let scraperModule: any = this.get('Scraper');
+
+scraperModule.param.websiteDomain = 'https://github.com';
+```
+
+Parameters:
+- `websiteDomain` domain name of the website you want to scrap, this parameter is important because it is use to complete relative url
+- `basicAuth` if your website need basic authentification, set this parameter like this: **user:password**
+- `enableCookies` enable cookies like a real navigator, necessary for form handling, default: false
+- `frequency` maximum page loading frequency
+- `maxLoadingPages` maximum number of pages load in the same time
+- `maxFailPerPage` number of time that loading the same page can fail before giving up
+- `timeout` request timeout in millisecond
+
+Parameters for the **addPage** function:
+- `url` requested url
+- `header` request headers (Object)
+- `param` data transmits to the **Parser**
+- `parser` **Parser** class used for this page
+- `noDoublon` if you want to check for duplicate request, default false
+- `form` form data for **POST** request
+- `method` request method (GET, POST...), default GET
+
+#### The FormHandler module
+
+Methods:
+- `createEmptyForm()` create and return an empty **Form**
+- `getForm( selector, $ )` create **Form** from html
+- `submit( form, parser )` submit **Form** and call **Parser**
+
+Form object methods:
+- `setInput( key, value )` set the value of key in the **Form**
+
+Form object parameters:
+- `inputs` all inputs and values of the form
+- `method` form method (GET, POST...)
+- `action` form action url

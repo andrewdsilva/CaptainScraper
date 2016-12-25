@@ -9,14 +9,14 @@ class LoginParser extends HtmlParser {
     public parse( $: any, parameters: any ): void {
 
         /* Getting scraper and form handler modules */
-        let scraperModule : any     = this.parent;
-        let formHandler : any = this.get('FormHandler');
+        let scraperModule: any  = this.parent;
+        let formHandler: any    = this.get('FormHandler');
 
         /* Getting form*/
         let form: any = formHandler.getForm( '.auth-form form', $ );
 
-        form.setInput( 'login', Parameters.get('sample').github.login )
-        form.setInput( 'password', Parameters.get('sample').github.password )
+        form.setInput( 'login', Parameters.get('sample').github.login );
+        form.setInput( 'password', Parameters.get('sample').github.password );
 
         /* Sending form */
         formHandler.submit( form, LoggedParser );
