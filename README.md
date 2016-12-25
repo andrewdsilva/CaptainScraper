@@ -101,7 +101,7 @@ export { MyFirstController };
 
 #### Parser
 
-A parser is a function you create that reads information from a web page. There is several kind of parsers, for example **HtmlParser** allow you to parse the page with cheerio that is an equivalent of jQuery.
+A parser is a function you create that reads information from a web page. There is several kind sof parsers, for example **HtmlParser** allow you to parse the page with cheerio that is an equivalent of jQuery.
 
 ```ts
 import { HtmlParser } from '../../../../vendor/captainscraper/modules/Scraper/Parser/HtmlParser';
@@ -132,7 +132,7 @@ To load a page we use the **addPage** function of the **Scraper** module. In a c
 let scraperModule: any = this.get( 'Scraper' );
 ```
 
-In a parser you can get the **Scraper** module with the **parent** attribut of the class. This attribut references the instance of Scraper that call the parser.
+In a parser you can get the **Scraper** module with the **parent** attribute of the class. This attribute references the instance of Scraper that call the parser.
 
 ```ts
 let scraperModule: any = this.parent;
@@ -158,7 +158,7 @@ First, load the page that contains the form you want to submit. Then, in the par
 let formHandler: any = this.get('FormHandler');
 ```
 
-Use the **getForm** function from the **formHandler** module to create a new **Form** object based on the form present in the page. The **Form** will be automaticly filled with all the inputs presents of the html form.
+Use the **getForm** function from the **formHandler** module to create a new **Form** object based on the form present in the page. The **Form** will be automatically filled with all the inputs presents of the HTML form.
 ```ts
 let form: any = formHandler.getForm( '.auth-form form', $ );
 ```
@@ -230,8 +230,8 @@ scraperModule.param.websiteDomain = 'https://github.com';
 ```
 
 Parameters:
-- `websiteDomain` domain name of the website you want to scrap, this parameter is important because it is use to complete relative url
-- `basicAuth` if your website need basic authentification, set this parameter like this: **user:password**
+- `websiteDomain` domain name of the website you want to scrap, this parameter is important because it is used to complete relative URL
+- `basicAuth` if your website need basic authentication, set this parameter like this: **user:password**
 - `enableCookies` enable cookies like a real navigator, necessary for form handling, default: false
 - `frequency` maximum page loading frequency
 - `maxLoadingPages` maximum number of pages load in the same time
@@ -251,7 +251,7 @@ Parameters for the **addPage** function:
 
 Methods:
 - `createEmptyForm()` create and return an empty **Form**
-- `getForm( selector, $ )` create **Form** from html
+- `getForm( selector, $ )` create **Form** from HTML
 - `submit( form, parser )` submit **Form** and call **Parser**
 
 Form object methods:
