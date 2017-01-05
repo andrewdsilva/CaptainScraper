@@ -1,5 +1,6 @@
-import { Parameters } from '../../../../vendor/captainscraper/framework/Configuration/Configuration';
-import { HtmlParser } from '../../../../vendor/captainscraper/modules/Scraper/Parser/HtmlParser';
+import { Parameters } from '../../../../app/importer';
+import { HtmlParser } from '../../../../app/importer';
+
 import { LoggedParser } from './LoggedParser';
 
 class LoginParser extends HtmlParser {

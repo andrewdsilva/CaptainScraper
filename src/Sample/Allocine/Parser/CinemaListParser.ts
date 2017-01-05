@@ -1,4 +1,4 @@
-import { HtmlParser } from '../../../../vendor/captainscraper/modules/Scraper/Parser/HtmlParser';
+import { HtmlParser } from '../../../../app/importer';
 
 class CinemaListParser extends HtmlParser {
 

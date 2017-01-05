@@ -1,4 +1,4 @@
-import { Controller } from '../../../../vendor/captainscraper/framework/Controller/Controller';
+import { Controller } from '../../../../app/importer';
 
 /* My parsers */
 import { CityListParser } from '../Parser/CityListParser';

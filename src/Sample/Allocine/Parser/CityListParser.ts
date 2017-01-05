@@ -1,4 +1,4 @@
-import { HtmlParser } from '../../../../vendor/captainscraper/modules/Scraper/Parser/HtmlParser';
+import { HtmlParser } from '../../../../app/importer';
 
 /* My parsers */
 import { CinemaListParser } from './CinemaListParser';
