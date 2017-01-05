@@ -101,7 +101,7 @@ export { MyFirstController };
 
 #### Parser
 
-A parser is a function you create that reads information from a web page. There is several kind sof parsers, for example **HtmlParser** allow you to parse the page with cheerio that is an equivalent of jQuery.
+A parser is a function you create that reads information from a web page. There is several kind of parsers, for example **HtmlParser** allow you to parse the page with cheerio that is an equivalent of jQuery.
 
 ```ts
 import { HtmlParser } from '../../../../vendor/captainscraper/modules/Scraper/Parser/HtmlParser';

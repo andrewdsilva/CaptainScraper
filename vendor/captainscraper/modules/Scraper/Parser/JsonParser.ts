@@ -23,7 +23,7 @@ class JsonParser extends Parser {
         let jsonData: any   = {};
 
         try {
-            jsonData = JSON.parse( data );
+            jsonData = JSON.parse( body );
 
             this.parse( jsonData, parameters );
         } catch( e ) {
