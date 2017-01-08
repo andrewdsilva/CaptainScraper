@@ -86,7 +86,7 @@ docker-compose -f docker-compose.dev.yml run app bash
 A controller is a class with a function **execute** that contains the main logic of your program. Every scraper has a controller. This is an example of controller declaration:
 
 ```ts
-import { Controller } from '../../../../vendor/captainscraper/framework/Controller/Controller';
+import { Controller } from '../../../../app/importer';
 
 class MyFirstController extends Controller {
 
@@ -104,7 +104,7 @@ export { MyFirstController };
 A parser is a function you create that reads information from a web page. There is several kind of parsers, for example **HtmlParser** allow you to parse the page with cheerio that is an equivalent of jQuery.
 
 ```ts
-import { HtmlParser } from '../../../../vendor/captainscraper/modules/Scraper/Parser/HtmlParser';
+import { HtmlParser } from '../../../../app/importer';
 
 class MyFirstParser extends HtmlParser {
 
@@ -215,7 +215,7 @@ Parameters.get('sample').github.password
 
 You can import the **Parameters** class in your *Controller* or *Parser* like this:
 ```ts
-import { Parameters } from '../../../../vendor/captainscraper/framework/Configuration/Configuration';
+import { Parameters } from '../../../../app/importer';
 ```
 
 *I know it's a little bit tricky, it will be simplified.*
