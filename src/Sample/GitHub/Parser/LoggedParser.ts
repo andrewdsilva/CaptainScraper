@@ -8,17 +8,18 @@ class LoggedParser extends HtmlParser {
     public parse( $: any, parameters: any ): void {
 
         /* Getting scraper and form handler modules */
-        let scraperModule : any     = this.parent;
-        let formHandler : any = this.get('FormHandler');
+        let scraperModule: any = this.parent;
+        let formHandler: any   = this.get('FormHandler');
+        let logger: any        = this.get('Logs');
 
         /* Cookies */
-        console.log( 'Cookies:' );
-        console.log( JSON.stringify( scraperModule.cookies.cookies ) );
+        logger.log( 'Cookies:' );
+        logger.log( JSON.stringify( scraperModule.cookies.cookies ) );
 
         if( scraperModule.cookies.cookies.logged_in === 'yes' ) {
-            console.log( 'Connection successful !' );
+            logger.log( 'Connection successful !' );
         } else {
-            console.log( 'Connection fail !' );
+            logger.log( 'Connection fail !' );
         }
 
     }

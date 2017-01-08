@@ -10,8 +10,9 @@ class LoginParser extends HtmlParser {
     public parse( $: any, parameters: any ): void {
 
         /* Getting scraper and form handler modules */
-        let scraperModule: any  = this.parent;
-        let formHandler: any    = this.get('FormHandler');
+        let scraperModule: any = this.parent;
+        let formHandler: any   = this.get('FormHandler');
+        let logger: any        = this.get('Logs');
 
         /* Getting form*/
         let form: any = formHandler.getForm( '.auth-form form', $ );
@@ -23,7 +24,7 @@ class LoginParser extends HtmlParser {
         formHandler.submit( form, LoggedParser );
 
         /* Form */
-        console.log( form );
+        logger.log( form );
 
     }
 

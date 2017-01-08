@@ -13,6 +13,7 @@ class Parameters {
         'modules'   : __dirname + '/../../../node_modules',
         'source'    : __dirname + '/../../../../src',
         'config'    : __dirname + '/../../../../app/config',
+        'logs'      : __dirname + '/../../../../app/logs',
         'commands'  : __dirname + '/../Command',
         'framework' : __dirname + '/..'
     };

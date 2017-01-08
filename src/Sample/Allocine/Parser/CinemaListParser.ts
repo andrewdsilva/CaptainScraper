@@ -6,6 +6,9 @@ class CinemaListParser extends HtmlParser {
 
     public parse( $: any, parameters: any ): void {
 
+        /* Logger module */
+        let logger: any = this.get('Logs');
+
         /* Read the data passed by the other parser  */
         let cityName: string = parameters.other.data.city;
 
@@ -28,14 +31,14 @@ class CinemaListParser extends HtmlParser {
         });
 
         /* Show city and cinema list */
-        console.log( 'City : ' + cityName + ' (' + zipCode + ')' );
-        console.log( 'Cinemas :' );
+        logger.log( 'City : ' + cityName + ' (' + zipCode + ')' );
+        logger.log( 'Cinemas :' );
 
         for( let i = 0; i < cinemas.length; i++ ) {
-            console.log( '- ' + cinemas[i].name );
+            logger.log( '- ' + cinemas[i].name );
         }
 
-        console.log('-----');
+        logger.log('-----');
 
     }
 

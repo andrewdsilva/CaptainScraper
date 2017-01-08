@@ -21,11 +21,11 @@
     },
     "repository" : {
         "type" : "git",
-        "url"  : "git://git.nathanlopez.fr:3000/nlopez/CaptainScraper.git"
+        "url"  : "https://github.com/andrewdsilva/CaptainScraper"
     },
     "author"  : "Nathan Lopez",
     "license" : "BSD-2-Clause",
     "bugs"    : {
-        "url": "http://git.nathanlopez.fr/nlopez/CaptainScraper"
+        "url": "https://github.com/andrewdsilva/CaptainScraper"
     }
 }

@@ -35,6 +35,7 @@ class Scraper extends Module {
 
     private manager: ManagerDatabase = null;
     private cookies: Cookies         = null;
+    private logger: any              = null;
 
     public param: any = {
         websiteDomain   : 'http://xxx.xx',
@@ -66,6 +67,11 @@ class Scraper extends Module {
         /* Dependency */
         if( controller.get('Database') === null ) {
             throw new Error( 'FormHandler does not work without the Scraper module.' );
+        }
+
+        /* Logger */
+        if( controller.get('Logs') !== null ) {
+            this.logger = controller.get('Logs');
         }
 
         Scraper.currentId++;
@@ -339,7 +345,13 @@ class Scraper extends Module {
 
     public log( message, color = 'blue' ): void {
 
-        if( this.param.log || color === 'red' ) console.log( '[' + this.controller.name + '] ' + ( message )[color] );
+        if( this.param.log || color === 'red' ) {
+            if( this.logger !== null ) {
+                this.logger.log( '[' + this.controller.name + '] ' + ( message ), false );
+            }
+
+            console.log( '[' + this.controller.name + '] ' + ( message )[color] );
+        }
 
     }
 
