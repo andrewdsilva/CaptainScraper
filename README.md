@@ -261,3 +261,17 @@ Form object parameters:
 - `inputs` all inputs and values of the form
 - `method` form method (GET, POST...)
 - `action` form action url
+
+#### The Logs module
+
+Sample:
+```ts
+let logger: any = this.get('Logs');
+
+logger.log( 'My log !' );
+```
+
+Methods:
+- `log( message, [ display = true ] )` save your log in a file and display on the console
+
+Logs are saved in **app/logs/{ CONTROLLER_NAME }.log**.
